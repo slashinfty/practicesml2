@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta charset="utf-8">
+	<title>SML2 Practice ROM Generator</title>
+	<link href="jqueryui/jquery-ui.css" rel="stylesheet">
+	<link href="css/index.css" rel="stylesheet">
+	<link rel="icon" type="image/x-icon" href="images/favicon.png">
+	<style>
+	.content {
+    	max-width: 920px;
+    	margin: auto;
+	}
+	body{
+		font-family: sans-serif;
+	}
+	.fieldset-auto-width {
+        display: inline-block;
+	}
+	#disabledSortable, #enabledSortableStandard, #enabledSortableDual, #enabledSortableBossLevels, #enabledSortableBosses { list-style-type: none; margin: 0; padding: 0; }
+	#disabledSortable li { margin: 0 5px 5px 5px; padding: 3px; width: 50%; }
+	#enabledSortableStandard li { margin: 0 5px 5px 5px; padding: 2px; width: 50%; }
+	#enabledSortableDual li { margin: 0 5px 5px 5px; padding: 2px; width: 50%; }
+	#enabledSortableBossLevels li { margin: 0 5px 5px 5px; padding: 2px; width: 50%; }
+	#enabledSortableBosses li { margin: 0 5px 5px 5px; padding: 2px; width: 50%; }
+	</style>
+</head>
+<body>
+<div class="content">
+	<h1>Super Mario Land 2 Practice ROM Generator</h1>
+	<table class="headfoot">
+		<tr>
+			<td><div class="upload"><input type="file" id="fileupload" name="upload" accept=".gb,.gbc" /><p></p></div></td>
+			<td class="calign"><p id="romVersion"></p></td>
+			<td class="ralign"><button id="generateRom" disabled>Generate ROM</button></td>
+		</tr>
+	</table>
+	<div id="accordion">
+		<h3>Starting Options</h3>
+		<div>
+			<fieldset class="fieldset-auto-width">
+				<legend>Level Completion</legend>
+				<div id="controlgroup1">
+				<label for="noComplete">No Levels Complete (Fresh File)</label>
+				<input type="radio" name="levelCompletion" id="noComplete" value="none" checked=true>
+				<label for="levelComplete">All Levels Complete (Bosses Unlocked)</label>
+				<input type="radio" name="levelCompletion" id="levelComplete" value="some">
+				<label for="bossComplete">All Bosses Complete (Castle Unlocked)</label>
+				<input type="radio" name="levelCompletion" id="bossComplete" value="all">
+				</div>
+			</fieldset>
+			<p></p>
+			<b>Note:</b> starting with cleared levels will not allow you to play Mushroom House and will not open up secret paths to start.
+			<p></p>
+			<div>
+			<label for="lives">Starting Lives: </label><input type="number" name="lives-input" id="lives" value="5" maxlength="2" min="1" max="99"/>
+			<p></p>
+			<label for="coins">Starting Coins: </label><input type="number" name="coins-input" id="coins" value="0" maxlength="3" min="0" max="999" />
+			</div>
+		</div>
+		<h3>Level Placement</h3>
+		<div>
+			<fieldset class="fieldset-auto-width">
+				<legend>Standard Levels</legend>
+				<table class="tstyle sortstyle">
+				<tr>
+				<th align="left" class="first-child">Overworld Location</th>
+				<th align="left">Level</th>
+				</tr>
+				<tr>
+				<td class="first-child">
+				<ul id="disabledSortable">
+					<li class="ui-state-disabled">Mushroom House</li>
+					<li class="ui-state-disabled">Tree Zone 1</li>
+					<li class="ui-state-disabled">Tree Zone 3</li>
+					<li class="ui-state-disabled">Tree Zone 4</li>
+					<li class="ui-state-disabled">Pumpkin Zone 1</li>
+					<li class="ui-state-disabled">Mario Zone 1</li>
+					<li class="ui-state-disabled">Mario Zone 2</li>
+					<li class="ui-state-disabled">Mario Zone 3</li>
+					<li class="ui-state-disabled">Turtle Zone 1</li>
+					<li class="ui-state-disabled">Macro Zone 2</li>
+					<li class="ui-state-disabled">Macro Zone 3</li>
+					<li class="ui-state-disabled">Miscellaneous</li>
+					<li class="ui-state-disabled">Turtle Zone Special</li>
+					<li class="ui-state-disabled">Pumpkin Zone Special 1</li>
+					<li class="ui-state-disabled">Space Zone Special</li>
+					<li class="ui-state-disabled">Tree Zone Special</li>
+					<li class="ui-state-disabled">Macro Zone Special</li>
+					<li class="ui-state-disabled">Pumpkin Zone Special 2</li>
+				</ul>
+				</td>
+				<td>
+				<ul id="enabledSortableStandard">
+					<li id="00" class="ui-state-default">Mushroom House</li>
+					<li id="01" class="ui-state-default">Tree Zone 1</li>
+					<li id="03" class="ui-state-default">Tree Zone 3</li>
+					<li id="04" class="ui-state-default">Tree Zone 4</li>
+					<li id="06" class="ui-state-default">Pumpkin Zone 1</li>
+					<li id="0A" class="ui-state-default">Mario Zone 1</li>
+					<li id="0B" class="ui-state-default">Mario Zone 2</li>
+					<li id="0C" class="ui-state-default">Mario Zone 3</li>
+					<li id="0E" class="ui-state-default">Turtle Zone 1</li>
+					<li id="15" class="ui-state-default">Macro Zone 2</li>
+					<li id="16" class="ui-state-default">Macro Zone 3</li>
+					<li id="19" class="ui-state-default">Miscellaneous</li>
+					<li id="1A" class="ui-state-default">Turtle Zone Special</li>
+					<li id="1B" class="ui-state-default">Pumpkin Zone Special 1</li>
+					<li id="1C" class="ui-state-default">Space Zone Special</li>
+					<li id="1D" class="ui-state-default">Tree Zone Special</li>
+					<li id="1E" class="ui-state-default">Macro Zone Special</li>
+					<li id="1F" class="ui-state-default">Pumpkin Zone Special 2</li>
+				</ul>
+				</td>
+				</tr>
+				</table>
+			</fieldset>
+			<p></p>
+			<fieldset class="fieldset-auto-width">
+				<legend>Dual Exit Levels</legend>
+				<table class="tstyle sortstyle">
+				<tr>
+				<th align="left" class="first-child">Overworld Location</th>
+				<th align="left">Level</th>
+				</tr>
+				<tr>
+				<td class="first-child">
+				<ul id="disabledSortable">
+					<li class="ui-state-disabled">Tree Zone 2</li>
+					<li class="ui-state-disabled">Pumpkin Zone 2</li>
+					<li class="ui-state-disabled">Pumpkin Zone 3</li>
+					<li class="ui-state-disabled">Turtle Zone 2</li>
+					<li class="ui-state-disabled">Hippo</li>
+					<li class="ui-state-disabled">Space Zone 1</li>
+					<li class="ui-state-disabled">Macro Zone 1</li>
+				</ul>
+				</td>
+				<td>
+				<ul id="enabledSortableDual">
+					<li id="02" class="ui-state-default">Tree Zone 2</li>
+					<li id="07" class="ui-state-default">Pumpkin Zone 2</li>
+					<li id="08" class="ui-state-default">Pumpkin Zone 3</li>
+					<li id="0F" class="ui-state-default">Turtle Zone 2</li>
+					<li id="11" class="ui-state-default">Hippo</li>
+					<li id="12" class="ui-state-default">Space Zone 1</li>
+					<li id="14" class="ui-state-default">Macro Zone 1</li>
+				</ul>
+				</td>
+				</tr>
+				</table>
+			</fieldset>
+			<p></p>
+			<fieldset class="fieldset-auto-width">
+				<legend>Boss Levels</legend>
+				<table class="tstyle sortstyle">
+				<tr>
+				<th align="left" class="first-child">Overworld Location</th>
+				<th align="left">Level</th>
+				</tr>
+				<tr>
+				<td class="first-child">
+				<ul id="disabledSortable">
+					<li class="ui-state-disabled">Tree Zone 5</li>
+					<li class="ui-state-disabled">Pumpkin Zone 4</li>
+					<li class="ui-state-disabled">Mario Zone 4</li>
+					<li class="ui-state-disabled">Turtle Zone 3</li>
+					<li class="ui-state-disabled">Space Zone 2</li>
+					<li class="ui-state-disabled">Macro Zone 4</li>
+				</ul>
+				</td>
+				<td>
+				<ul id="enabledSortableBossLevels">
+					<li id="05" class="ui-state-default">Tree Zone 5</li>
+					<li id="09" class="ui-state-default">Pumpkin Zone 4</li>
+					<li id="0D" class="ui-state-default">Mario Zone 4</li>
+					<li id="10" class="ui-state-default">Turtle Zone 3</li>
+					<li id="13" class="ui-state-default">Space Zone 2</li>
+					<li id="17" class="ui-state-default">Macro Zone 4</li>
+				</ul>
+				</td>
+				</tr>
+				</table>
+			</fieldset>
+			<p></p>
+			<fieldset class="fieldset-auto-width">
+				<legend>Boss Locations</legend>
+				<table class="tstyle sortstyle">
+				<tr>
+				<th align="left" class="first-child">Level</th>
+				<th align="left">Boss</th>
+				</tr>
+				<tr>
+				<td class="first-child">
+				<ul id="disabledSortable">
+					<li class="ui-state-disabled">Tree Zone 5</li>
+					<li class="ui-state-disabled">Pumpkin Zone 4</li>
+					<li class="ui-state-disabled">Mario Zone 4</li>
+					<li class="ui-state-disabled">Turtle Zone 3</li>
+					<li class="ui-state-disabled">Space Zone 2</li>
+					<li class="ui-state-disabled">Macro Zone 4</li>
+				</ul>
+				</td>
+				<td>
+				<ul id="enabledSortableBosses">
+					<li id ="8E03" class="ui-state-default">Bird</li>
+					<li id ="8E08" class="ui-state-default">Witch</li>
+					<li id ="8E0D" class="ui-state-default">Pigs</li>
+					<li id ="8E12" class="ui-state-default">Octopus</li>
+					<li id ="8E17" class="ui-state-default">Tatanga</li>
+					<li id ="8E1C" class="ui-state-default">Rat</li>
+				</ul>
+				</td>
+				</tr>
+				</table>
+			</fieldset>
+		</div>
+		<h3>Level Properties</h3>
+		<div>
+			<div id="controlgroup2">
+				<label for="experimental">Experimental Mode (may lead to unbeatable seeds)</label>
+				<input type="checkbox" id="experimental">
+			</div>
+			<p></p>
+			<fieldset class="fieldset-auto-width">
+				<legend>Gravity and Scrolling</legend>
+				<table class="tstyle">
+				<tr>
+				<th>&nbsp;</th>
+				<th colspan="3">Level Gravity</th>
+				<th colspan="2">Scrolling Speed</th>
+				</tr>
+				<tr>
+				<th class="first-child" align="left">Level</th>
+				<th class="options">Normal</th>
+				<th class="options">Moon</th>
+				<th class="options">Space</th>
+				<th class="options">Normal</th>
+				<th class="options">Fast</th>
+				</tr>
+				</table>
+				<table class="tstyle properties">
+				<tr>
+				<td class="first-child">Mushroom House</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity00" id="normal00" data-offset="1F91" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity00" id="moon00" data-offset="1F91" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity00" id="space00" data-offset="1F91" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll00" data-offset="1F71"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast00" data-offset="00"></td>
+				</tr>
+				<tr>
+				<td class="first-child">Tree Zone 1</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity01" id="normal01" data-offset="1F92" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity01" id="moon01" data-offset="1F92" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity01" id="space01" data-offset="1F92" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll01" data-offset="1F72"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast01" data-offset="01" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Tree Zone 2</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity02" id="normal02" data-offset="1F93" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity02" id="moon02" data-offset="1F93" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity02" id="space02" data-offset="1F93" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll02" data-offset="1F73"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast02" data-offset="02" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Tree Zone 3</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity03" id="normal03" data-offset="1F94" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity03" id="moon03" data-offset="1F94" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity03" id="space03" data-offset="1F94" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll03" data-offset="1F74"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast03" data-offset="03" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Tree Zone 4</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity04" id="normal04" data-offset="1F95" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity04" id="moon04" data-offset="1F95" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity04" id="space04" data-offset="1F95" data-byte="01"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll04" data-offset="1F75" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast04" data-offset="04" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Tree Zone 5</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity05" id="normal05" data-offset="1F96" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity05" id="moon05" data-offset="1F96" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity05" id="space05" data-offset="1F96" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll05" data-offset="1F76"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast05" data-offset="05"></td>
+				</tr>
+				<tr>
+				<td class="first-child">Pumpkin Zone 1</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity06" id="normal06" data-offset="1F97" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity06" id="moon06" data-offset="1F97" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity06" id="space06" data-offset="1F97" data-byte="01"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll06" data-offset="1F77" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast06" data-offset="06" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Pumpkin Zone 2</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity07" id="normal07" data-offset="1F98" data-byte="00" value="00" checked=true></td>
+				<td class="options"><input class ="prop disable" type="radio" name="gravity07" id="moon07" data-offset="1F98" data-byte="08" value="08" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="radio" name="gravity07" id="space07" data-offset="1F98" data-byte="01" value="01" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll07" data-offset="1F78" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast07" data-offset="07" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Pumpkin Zone 3</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity08" id="normal08" data-offset="1F99" data-byte="00" value="00" checked=true></td>
+				<td class="options"><input class ="prop disable" type="radio" name="gravity08" id="moon08" data-offset="1F99" data-byte="08" value="08" disabled=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity08" id="space08" data-offset="1F99" data-byte="01" value="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll08" data-offset="1F79"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast08" data-offset="08" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Pumpkin Zone 4</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity09" id="normal09" data-offset="1F9A" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity09" id="moon09" data-offset="1F9A" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity09" id="space09" data-offset="1F9A" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll09" data-offset="1F7A"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast09" data-offset="09"></td>
+				</tr>
+				<tr>
+				<td class="first-child">Mario Zone 1</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0A" id="normal0A" data-offset="1F9B" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0A" id="moon0A" data-offset="1F9B" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0A" id="space0A" data-offset="1F9B" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll0A" data-offset="1F7B"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast0A" data-offset="0A" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Mario Zone 2</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0B" id="normal0B" data-offset="1F9C" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0B" id="moon0B" data-offset="1F9C" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0B" id="space0B" data-offset="1F9C" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll0B" data-offset="1F7C"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast0B" data-offset="0B"></td>
+				</tr>
+				<tr>
+				<td class="first-child">Mario Zone 3</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0C" id="normal0C" data-offset="1F9D" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0C" id="moon0C" data-offset="1F9D" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0C" id="space0C" data-offset="1F9D" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll0C" data-offset="1F7D"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast0C" data-offset="0C"></td>
+				</tr>
+				<tr>
+				<td class="first-child">Mario Zone 4</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0D" id="normal0D" data-offset="1F9E" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0D" id="moon0D" data-offset="1F9E" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0D" id="space0D" data-offset="1F9E" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll0D" data-offset="1F7E"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast0D" data-offset="0D"></td>
+				</tr>
+				<tr>
+				<td class="first-child">Turtle Zone 1</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0E" id="normal0E" data-offset="1F9F" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0E" id="moon0E" data-offset="1F9F" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0E" id="space0E" data-offset="1F9F" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll0E" data-offset="1F7F"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast0E" data-offset="0E" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Turtle Zone 2</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0F" id="normal0F" data-offset="1FA0" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0F" id="moon0F" data-offset="1FA0" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity0F" id="space0F" data-offset="1FA0" data-byte="01"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll0F" data-offset="1F80" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast0F" data-offset="0F" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Turtle Zone 3</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity10" id="normal10" data-offset="1FA1" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity10" id="moon10" data-offset="1FA1" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity10" id="space10" data-offset="1FA1" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll10" data-offset="1F81"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast10" data-offset="10"></td>
+				</tr>
+				<tr id="level11">
+				<td class="first-child">Hippo</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity11" id="normal11" data-offset="1FA2" data-byte="00" value="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity11" id="moon11" data-offset="1FA2" data-byte="08" value="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity11" id="space11" data-offset="1FA2" data-byte="01" value="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll11" data-offset="1F82"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast11" data-offset="11"></td>
+				</tr>
+				<tr id="level12">
+				<td class="first-child">Space Zone 1</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity12" id="normal12" data-offset="1FA3" data-byte="00" value="00"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity12" id="moon12" data-offset="1FA3" data-byte="08" value="08" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity12" id="space12" data-offset="1FA3" data-byte="01" value="01"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll12" data-offset="1F83" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast12" data-offset="12" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Space Zone 2</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity13" id="normal13" data-offset="1FA4" data-byte="00"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity13" id="moon13" data-offset="1FA4" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity13" id="space13" data-offset="1FA4" data-byte="01" checked=true></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll13" data-offset="1F84" checked=true></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast13" data-offset="13"></td>
+				</tr>
+				<tr>
+				<td class="first-child">Macro Zone 1</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity14" id="normal14" data-offset="1FA5" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity14" id="moon14" data-offset="1FA5" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity14" id="space14" data-offset="1FA5" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll14" data-offset="1F85"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast14" data-offset="14" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Macro Zone 2</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity15" id="normal15" data-offset="1FA6" data-byte="00" value="00" checked=true></td>
+				<td class="options"><input class ="prop disable" type="radio" name="gravity15" id="moon15" data-offset="1FA6" data-byte="08" value="08" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="radio" name="gravity15" id="space15" data-offset="1FA6" data-byte="01" value="01" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll15" data-offset="1F86" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast15" data-offset="15" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Macro Zone 3</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity16" id="normal16" data-offset="1FA7" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity16" id="moon16" data-offset="1FA7" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity16" id="space16" data-offset="1FA7" data-byte="01"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll16" data-offset="1F87" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast16" data-offset="16" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Macro Zone 4</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity17" id="normal17" data-offset="1FA8" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity17" id="moon17" data-offset="1FA8" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity17" id="space17" data-offset="1FA8" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll17" data-offset="1F88"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast17" data-offset="17"></td>
+				</tr>
+				<tr>
+				<td class="first-child">Wario's Castle</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity18" id="normal18" data-offset="1FA9" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity18" id="moon18" data-offset="1FA9" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity18" id="space18" data-offset="1FA9" data-byte="01"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll18" data-offset="1F89" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast18" data-offset="18" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Miscellaneous</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity19" id="normal19" data-offset="1FAA" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity19" id="moon19" data-offset="1FAA" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity19" id="space19" data-offset="1FAA" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll19" data-offset="1F8A" checked=true></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast19" data-offset="19"></td>
+				</tr>
+				<tr>
+				<td class="first-child">Turtle Zone Special</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1A" id="normal1A" data-offset="1FAB" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1A" id="moon1A" data-offset="1FAB" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1A" id="space1A" data-offset="1FAB" data-byte="01"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll1A" data-offset="1F8B" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast1A" data-offset="1A" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Pumpkin Zone Special 1</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1B" id="normal1B" data-offset="1FAC" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1B" id="moon1B" data-offset="1FAC" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1B" id="space1B" data-offset="1FAC" data-byte="01"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll1B" data-offset="1F8C" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast1B" data-offset="1B" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Space Zone Special</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1C" id="normal1C" data-offset="1FAD" data-byte="00"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1C" id="moon1C" data-offset="1FAD" data-byte="08" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1C" id="space1C" data-offset="1FAD" data-byte="01"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll1C" data-offset="1F8D" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast1C" data-offset="1C" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Tree Zone Special</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1D" id="normal1D" data-offset="1FAE" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1D" id="moon1D" data-offset="1FAE" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1D" id="space1D" data-offset="1FAE" data-byte="01"></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="scroll1D" data-offset="1F8E" disabled=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast1D" data-offset="1D" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Macro Zone Special</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1E" id="normal1E" data-offset="1FAF" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1E" id="moon1E" data-offset="1FAF" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1E" id="space1E" data-offset="1FAF" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll1E" data-offset="1F8F" checked=true></td>
+				<td class="options"><input class ="prop disable" type="checkbox" id="fast1E" data-offset="1E" disabled=true></td>
+				</tr>
+				<tr>
+				<td class="first-child">Pumpkin Zone Special 2</td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1F" id="normal1F" data-offset="1FB0" data-byte="00" checked=true></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1F" id="moon1F" data-offset="1FB0" data-byte="08"></td>
+				<td class="options"><input class ="prop" type="radio" name="gravity1F" id="space1F" data-offset="1FB0" data-byte="01"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="scroll1F" data-offset="1F90"></td>
+				<td class="options"><input class ="prop" type="checkbox" id="fast1F" data-offset="1F"></td>
+				</tr>
+				</table>
+			</fieldset>
+		</div>
+		<h3>Randomizer Options</h3>
+		<div>
+			<div id="controlgroup3">
+				<label for="skipLevels">Skip Level Placement</label>
+				<input type="checkbox" id="skipLevels">
+				<label for="skipBosses">Skip Boss Placement</label>
+				<input type="checkbox" id="skipBosses">
+				<label for="skipGravity">Skip Level Gravity</label>
+				<input type="checkbox" id="skipGravity">
+				<label for="skipScrolling">Skip Level Scrolling</label>
+				<input type="checkbox" id="skipScrolling">
+			</div>
+			<p></p>
+			<label for="userFileName">Custom File Name (sml2-[yourTextHere].gb): </label><input type="text" id="userFileName" size="32" pattern="[a-zA-Z0-9._-]" placeholder="if blank, UTC date and time will be used" />
+		</div>
+	</div>
+	<table class="headfoot">
+		<tr>
+			<td><font size="1"><a href="https://github.com/slashinfty/practicesml2">View Source on GitHub</a></font></td>
+			<td class="calign"><font size="1"><a href="https://github.com/slashinfty/practicesml2/blob/master/LICENSE">GNU General Public License v3.0</a></font></td>
+			<td class="ralign"><font size="1"><a href="http://sml2r.download/">Super Mario Land 2 Randomizer</a></font></td>
+		</tr>
+	</table>
+</div>
+<script src="jqueryui/external/jquery/jquery.js"></script>
+<script src="jqueryui/jquery-ui.js"></script>
+<script src="js/logistics.js"></script>
+<script src="js/generator.js"></script>
+<script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
+<script>
+	var experimentalMode = false;
+	$(function() {
+		$( "#accordion" ).accordion({
+			collapsible: true,
+			active: false,
+			heightStyle: "content"
+		});
+	} );
+	$( "#controlgroup1" ).controlgroup({
+		direction: "vertical"
+	} );
+	$( "#controlgroup2" ).controlgroup({});
+	$( "#controlgroup3" ).controlgroup({
+		direction: "vertical"
+	} );
+	$(function() {
+		$( "#disabledSortable, #enabledSortableStandard, #enabledSortableDual, #enabledSortableBossLevels, #enabledSortableBosses" ).sortable({
+		});
+		$( "#disabledSortable li, #enabledSortableStandard li, #enabledSortableDual li, #enabledSortableBossLevels li, #enabledSortableBosses li").disableSelection();
+	} );
+	$( "#level12" ).click(function() {
+		if ( $('input[name=gravity12]:checked').val() == "08" && !experimentalMode ) {
+			if ( $( "#scroll12" ).prop("checked") ) {
+				$( "#scroll12" ).prop("checked", false);
+			}
+			$( "#scroll12" ).prop("disabled", true);
+		} else {
+			$( "#scroll12" ).prop("disabled", false);
+		}
+	});
+	$( "#level11" ).click(function() {
+		if ( $('input[name=gravity11]:checked').val() == "08" && !experimentalMode ) {
+			if ( $( "#fast11" ).prop("checked") ) {
+				$( "#fast11" ).prop("checked", false);
+			}
+			$( "#fast11" ).prop("disabled", true);
+		} else {
+			$( "#fast11" ).prop("disabled", false);
+		}
+	});
+	$( ".prop:checkbox" ).change(function(ev) {
+		var el = ev.target;
+		var stringOffset = $(el).data("offset");
+		var hexOffset = parseInt(stringOffset, 16);
+		if ( hexOffset < 0x20 && $(el).prop("checked") ) {
+			var scrollOffset = (0x1F71 + hexOffset).toString(16).toUpperCase();
+			$( ".prop:checkbox[data-offset='" + scrollOffset + "']" ).prop("checked", false);
+		} else if ( hexOffset > 0x20 && $(el).prop("checked") ) {
+			var fastOffset = ("0" + (hexOffset - 0x1F71).toString(16).toUpperCase()).substr(-2);
+			$( ".prop:checkbox[data-offset='" + fastOffset + "']" ).prop("checked", false);
+		}
+	});
+	$( "#experimental" ).click(function() {
+		var currentState = $(this).prop("checked");
+		experimentalMode = currentState;
+		$( ".disable:checkbox, .disable:radio" ).each(function() {
+			$(this).prop("disabled", !currentState);
+			if ( !currentState ) {
+				$(this).prop("checked", false);
+			}
+		});
+		$( "gravity07" ).prop("checked", true);
+		$( "input[name=gravity07]:checked").val = "00";
+		$( "gravity15" ).prop("checked", true);
+		$( "input[name=gravity15]:checked").val = "00";
+		if ( $( "input[name=gravity08]:checked" ).val() != "01" && !$( "gravity08" ).prop("checked") ) {
+			$( "gravity08" ).prop("checked", true);
+			$( "input[name=gravity08]:checked").val = "00";
+		}
+	});
+</script>
+</body>
+</html>

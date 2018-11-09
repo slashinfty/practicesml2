@@ -1,0 +1,38 @@
+table.properties tr:hover {
+	background-color: #f2f2f2;
+}
+table.headfoot {
+	width: 920px;
+}
+table.tstyle {
+	width: 800px;
+}
+table.tstyle td.first-child {
+	width: 300px;
+}
+table.tstyle td.options {
+	width: 100px;
+	text-align: center;
+}
+table.tstyle th.first-child {
+	width: 300px;
+}
+table.tstyle th.options {
+	width: 100px;
+	text-align: center;
+}
+table.tstyle td.calign {
+	text-align: center;
+}
+table.tstyle td.ralign {
+	text-align: right;
+}
+table.headfoot td.calign {
+	text-align: center;
+}
+table.headfoot td.ralign {
+	text-align: right;
+}
+table.sortstyle td.first-child {
+	width: 400px;
+}
