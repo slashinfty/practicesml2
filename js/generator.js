@@ -222,9 +222,9 @@ const patchPhysicsScrolling = {
 }
 
 function clearExits(amount, rom) {
-	if (amount = "some") {
+	if (amount == "some") {
 		patch(patchSomeExitsCleared, rom)
-	} else if (amount = "all") {
+	} else if (amount == "all") {
 		patch(patchAllExitsCleared, rom)
 	}
 }
