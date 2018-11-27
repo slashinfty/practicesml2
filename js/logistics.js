@@ -22,7 +22,7 @@ function romCheck(buffer) {
 	var print = "Not a ROM of MARIOLAND2";
 	var origRom = [0x4D, 0x41, 0x52, 0x49, 0x4F, 0x4C, 0x41, 0x4E, 0x44, 0x32];
 	var romVerify = 10;
-	for (var i = 0; i < origRom.length; i++) {
+	for (let i = 0; i < origRom.length; i++) {
 		if (romTest[0x134 + i] == origRom[i]) {
 			romVerify--;
         }
@@ -72,10 +72,10 @@ function doGenerate(buffer) {
 		scrolling(checkedLevels, rom);
 	}
 	checksum(rom);
-	var d = new Date();
-	var date = (d.getUTCMonth() + 1).toString() + d.getUTCDate().toString() + d.getUTCFullYear().toString()
+	let d = new Date();
+	let date = (d.getUTCMonth() + 1).toString() + d.getUTCDate().toString() + d.getUTCFullYear().toString()
 	+ "-" + ("0" + d.getUTCHours().toString()).substr(-2) +("0" + d.getUTCMinutes().toString()).substr(-2);
-	var slug = document.getElementById("userFileName").value.length > 0 ? document.getElementById("userFileName").value : date;
-	var fileName = "sml2-" + slug + ".gb";
+	let slug = document.getElementById("userFileName").value.length > 0 ? document.getElementById("userFileName").value : date;
+	let fileName = "sml2-" + slug + ".gb";
 	saveAs(new Blob([buffer], {type: "octet/stream"}), fileName);
 }
